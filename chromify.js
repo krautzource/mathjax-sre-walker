@@ -83,5 +83,5 @@ chromify.attachNavigator = function(node) {
 chromify.attach = function() {
   let node = document.querySelector('span');
   chromify.rewrite(node);
-  chromify.attachNavigator(node);
+  chromify.attachNavigator(node.firstChild);
 };
