@@ -42,7 +42,8 @@ chromify.rewriteNode = function(node, c) {
     for (const child of node.childNodes) {
         chromify.rewriteNode(child, c);
     }
-}
+};
+
 
 chromify.rewriteExpression = function (nodes) {
     let c = 0;
@@ -50,7 +51,7 @@ chromify.rewriteExpression = function (nodes) {
         chromify.rewriteNode(node, c++);
         chromify.attachNavigator(node.firstChild);
     }
-}
+};
 
 /**
  * Key codes.
@@ -90,7 +91,7 @@ chromify.attachNavigator = function(node) {
     case 40: //down
       break;
     }
-                if (next >= 0 && next < linearization.length) {
+    if (next >= 0 && next < linearization.length) {
       node.setAttribute('aria-activedescendant', linearization[next]);
       this.current = next;
     }
