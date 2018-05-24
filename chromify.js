@@ -1,32 +1,30 @@
-// rendered CommonHTML with SRE annotation
-// data-semantic-children =>  aria-owns
-// -speech => aria-label
-// non-empty text-node => div.inline around it with aria-hidden=true
 
-let ariaowners = function(node, c) {
+const chromify = {};
+
+chromify.ariaowners = function(node, c) {
     if (node.hasAttribute('data-semantic-children')) {
         let ids = node.getAttribute('data-semantic-children').split(/,/);
-        node.setAttribute('aria-owns', ids.map(n => makeid(c, n)).join(' '));
+        node.setAttribute('aria-owns', ids.map(n => chromify.makeid(c, n)).join(' '));
     }
 }
 
-let makeid = function(c, i) {
+chromify.makeid = function(c, i) {
     return 'MJX' + c + '-' + i;
 }
 
-let setid = function(node, c) {
+chromify.setid = function(node, c) {
     if (node.hasAttribute('data-semantic-id')) {
-        node.id = makeid(c, node.getAttribute('data-semantic-id'));
+        node.id = chromify.makeid(c, node.getAttribute('data-semantic-id'));
     }
 }
 
-let speechers = function(node) {
-    if (node.hasAttribute('data-semantic-speech')) {
-        node.setAttribute('aria-label', node.getAttribute('data-semantic-speech'));
-    }
+chromify.speechers = function(node) {
+  if (node.hasAttribute('data-semantic-speech')) {
+    node.setAttribute('aria-label', node.getAttribute('data-semantic-speech'));
+  }
 }
 
-let rewrite = function(node, c) {
+chromify.rewriteNode = function(node, c) {
     if (node.nodeType === 3) {
         // if (node.textContent.trim() === '') return;
         let div = document.createElement('div');
@@ -38,24 +36,57 @@ let rewrite = function(node, c) {
         return;
     }
     node.removeAttribute('aria-hidden');
-    ariaowners(node, c);
-    setid(node, c);
-    speechers(node);
+    chromify.ariaowners(node, c);
+    chromify.setid(node, c);
+    chromify.speechers(node);
     for (const child of node.childNodes) {
-        rewrite(child, c);
+        chromify.rewriteNode(child, c);
     }
 }
 
-let rewriteCHTML = function (nodes) {
+chromify.rewriteExpression = function (nodes) {
     let c = 0;
     for (const node of nodes) {
-        rewrite(node, c++);
+        chromify.rewriteNode(node, c++);
+        chromify.attachNavigator(node.firstChild);
     }
 }
 
-rewriteCHTML(document.querySelectorAll('.mjx-chtml'));
+/**
+ * Key codes.
+ * @enum {number}
+ */
+chromify.KeyCode = {
+  ENTER: 13,
+  ESC: 27,
+  SPACE: 32,
+  PAGE_UP: 33,    // also NUM_NORTH_EAST
+  PAGE_DOWN: 34,  // also NUM_SOUTH_EAST
+  END: 35,        // also NUM_SOUTH_WEST
+  HOME: 36,       // also NUM_NORTH_WEST
+  LEFT: 37,
+  UP: 38,
+  RIGHT: 39,
+  DOWN: 40,
+  TAB: 9
+};
 
+chromify.attachNavigator = function(node) {
+  node.setAttribute('tabindex', '0');
+  node.setAttribute('role', 'group');
+  document.addEventListener('keydown',function(event){
+    switch(event.keyCode){
+    case 37: //left
+    case 38: //up
+    case 39: //right
+    case 40: //down
+      node.setAttribute('aria-activedescendant', node.getAttribute('aria-owns'));
+      break;
+    }
+  });
+};
 
-const attachNavigator = function(node){
-    node.setAttribute('tabindex', '0');
-}
+chromify.attach = function() {
+  let nodes = document.querySelectorAll('.mjx-chtml');
+  chromify.rewriteExpression(nodes);
+};
