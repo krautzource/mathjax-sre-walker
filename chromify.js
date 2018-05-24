@@ -8,42 +8,42 @@ let id = 0;
 // non-empty text-node => div.inline around it with aria-hidden=true
 
 chromify.ariaowners = function(node) {
-    if (node.hasAttribute('data-semantic-children')) {
-        node.setAttribute('aria-owns', node.getAttribute('data-semantic-children').replace(/,/g,' '));
-    }
+  if (node.hasAttribute('data-semantic-children')) {
+    node.setAttribute('aria-owns', node.getAttribute('data-semantic-children').replace(/,/g,' '));
+  }
 }
 
 chromify.makeid = function(node) {
-    if (node.hasAttribute('data-semantic-id')) {
-        node.id = node.getAttribute('data-semantic-id');
-    }
+  if (node.hasAttribute('data-semantic-id')) {
+    node.id = node.getAttribute('data-semantic-id');
+  }
 }
 
 chromify.speechers = function(node) {
-    if (node.hasAttribute('data-semantic-speech')) {
-        node.setAttribute('aria-label', node.getAttribute('data-semantic-speech'));
-    }
+  if (node.hasAttribute('data-semantic-speech')) {
+    node.setAttribute('aria-label', node.getAttribute('data-semantic-speech'));
+  }
 }
 
 chromify.rewrite = function(node) {
-    if (node.nodeType === 3) {
-        // if (node.textContent.trim() === '') return;
-        let div = document.createElement('div');
-        let parent = node.parentNode;
-        div.setAttribute('style','display:inline')
-        div.appendChild(node);
-        div.setAttribute('aria-hidden', true);
-        parent.appendChild(div);
-        return;
-    }
-    node.removeAttribute('aria-hidden');
-    ariaowners(node);
-    makeid(node);
-    speechers(node);
-    for (let i = 0, child; child = node.childNodes[i]; i++) {
+  if (node.nodeType === 3) {
+    // if (node.textContent.trim() === '') return;
+    let div = document.createElement('div');
+    let parent = node.parentNode;
+    div.setAttribute('style','display:inline')
+    div.appendChild(node);
+    div.setAttribute('aria-hidden', true);
+    parent.appendChild(div);
+    return;
+  }
+  node.removeAttribute('aria-hidden');
+  chromify.ariaowners(node);
+  chromify.makeid(node);
+  chromify.speechers(node);
+  for (let i = 0, child; child = node.childNodes[i]; i++) {
 
-        rewrite(child);
-    }
+    chromify.rewrite(child);
+  }
 }
 
 /**
