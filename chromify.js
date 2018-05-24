@@ -1,30 +1,38 @@
 
 const chromify = {};
 
-chromify.ariaowners = function(node, c) {
+chromify.ariaowners = function (node, c) {
     if (node.hasAttribute('data-semantic-children')) {
         let ids = node.getAttribute('data-semantic-children').split(/,/);
         node.setAttribute('aria-owns', ids.map(n => chromify.makeid(c, n)).join(' '));
     }
 }
 
-chromify.makeid = function(c, i) {
+chromify.makeid = function (c, i) {
     return 'MJX' + c + '-' + i;
 }
 
-chromify.setid = function(node, c) {
+chromify.setid = function (node, c) {
     if (node.hasAttribute('data-semantic-id')) {
         node.id = chromify.makeid(c, node.getAttribute('data-semantic-id'));
     }
 }
 
-chromify.speechers = function(node) {
+chromify.speechers = function (node) {
   if (node.hasAttribute('data-semantic-speech')) {
     node.setAttribute('aria-label', node.getAttribute('data-semantic-speech'));
   }
 }
 
-chromify.rewriteNode = function(node, c) {
+chromify.nodetree = function (node, c) {
+    if (node.hasAttribute('data-semantic-collapsed')) {
+        const list = node.getAttribute('data-semantic-collapsed');
+        const ids = list.replace(/\d+/g, (n => chromify.makeid(c, n)));
+        node.setAttribute('data-semantic-collapsed', ids);
+    }
+}
+
+chromify.rewriteNode = function (node, c) {
     if (node.nodeType === 3) {
         // if (node.textContent.trim() === '') return;
         let div = document.createElement('div');
@@ -39,6 +47,7 @@ chromify.rewriteNode = function(node, c) {
     chromify.ariaowners(node, c);
     chromify.setid(node, c);
     chromify.speechers(node);
+    chromify.nodetree(node, c);
     for (const child of node.childNodes) {
         chromify.rewriteNode(child, c);
     }
