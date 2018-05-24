@@ -1,19 +1,22 @@
-let id = 0;
-
 // rendered CommonHTML with SRE annotation
 // data-semantic-children =>  aria-owns
 // -speech => aria-label
 // non-empty text-node => div.inline around it with aria-hidden=true
 
-let ariaowners = function(node) {
+let ariaowners = function(node, c) {
     if (node.hasAttribute('data-semantic-children')) {
-        node.setAttribute('aria-owns', node.getAttribute('data-semantic-children').replace(/,/g,' '));
+        let ids = node.getAttribute('data-semantic-children').split(/,/);
+        node.setAttribute('aria-owns', ids.map(n => makeid(c, n)).join(' '));
     }
 }
 
-let makeid = function(node) {
+let makeid = function(c, i) {
+    return 'MJX' + c + '-' + i;
+}
+
+let setid = function(node, c) {
     if (node.hasAttribute('data-semantic-id')) {
-        node.id = node.getAttribute('data-semantic-id');
+        node.id = makeid(c, node.getAttribute('data-semantic-id'));
     }
 }
 
@@ -23,7 +26,7 @@ let speechers = function(node) {
     }
 }
 
-let rewrite = function(node) {
+let rewrite = function(node, c) {
     if (node.nodeType === 3) {
         // if (node.textContent.trim() === '') return;
         let div = document.createElement('div');
@@ -35,15 +38,22 @@ let rewrite = function(node) {
         return;
     }
     node.removeAttribute('aria-hidden');
-    ariaowners(node);
-    makeid(node);
+    ariaowners(node, c);
+    setid(node, c);
     speechers(node);
-    for (let i = 0, child; child = node.childNodes[i]; i++) {
-
-        rewrite(child);
+    for (const child of node.childNodes) {
+        rewrite(child, c);
     }
 }
-rewrite(document.querySelector('span'))
+
+let rewriteCHTML = function (nodes) {
+    let c = 0;
+    for (const node of nodes) {
+        rewrite(node, c++);
+    }
+}
+
+rewriteCHTML(document.querySelectorAll('.mjx-chtml'));
 
 
 const attachNavigator = function(node){
