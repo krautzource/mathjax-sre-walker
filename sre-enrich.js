@@ -6,7 +6,7 @@ sre.setupEngine({
   locale: 'en',
   speech: 'deep'
   });
-  const mj = require('mathjax-node').typeset;
+const mj = require('mathjax-node').typeset;
 
 const main = async (input) => {
   let format = 'MathML'
