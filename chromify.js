@@ -75,13 +75,24 @@ chromify.attachNavigator = function(node) {
   node.setAttribute('tabindex', '0');
   node.setAttribute('role', 'group');
   document.addEventListener('keydown',function(event){
+    let linearization = node.getAttribute('data-semantic-children').split(',');
+    this.current = this.current == undefined ? 0 : this.current;
+    let next = this.current;
     switch(event.keyCode){
     case 37: //left
-    case 38: //up
-    case 39: //right
-    case 40: //down
-      node.setAttribute('aria-activedescendant', node.getAttribute('aria-owns'));
+      next -= 1;
       break;
+    case 38: //up
+      break;
+    case 39: //right
+      next += 1;
+      break;
+    case 40: //down
+      break;
+    }
+                if (next >= 0 && next < linearization.length) {
+      node.setAttribute('aria-activedescendant', linearization[next]);
+      this.current = next;
     }
   });
 };
