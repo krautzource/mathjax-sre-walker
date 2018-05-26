@@ -33,24 +33,24 @@ chromify.nodetree = function (node, c) {
 }
 
 chromify.rewriteNode = function (node, c) {
-    if (node.nodeType === 3) {
-        // if (node.textContent.trim() === '') return;
-        let div = document.createElement('div');
-        let parent = node.parentNode;
-        div.setAttribute('style','display:inline')
-        div.appendChild(node);
-        div.setAttribute('aria-hidden', true);
-        parent.appendChild(div);
-        return;
-    }
-    node.removeAttribute('aria-hidden');
-    chromify.ariaowners(node, c);
-    chromify.setid(node, c);
-    chromify.speechers(node);
-    chromify.nodetree(node, c);
-    for (const child of node.childNodes) {
-        chromify.rewriteNode(child, c);
-    }
+  if (node.nodeType === 3) {
+    // if (node.textContent.trim() === '') return;
+    let div = document.createElement('div');
+    let parent = node.parentNode;
+    div.setAttribute('style','display:inline');
+    div.appendChild(node);
+    div.setAttribute('aria-hidden', true);
+    parent.appendChild(div);
+    return;
+  }
+  node.removeAttribute('aria-hidden');
+  chromify.ariaowners(node, c);
+  chromify.setid(node, c);
+  chromify.speechers(node);
+  // chromify.nodetree(node, c);
+  for (const child of node.childNodes) {
+    chromify.rewriteNode(child, c);
+  }
 };
 
 
@@ -85,7 +85,10 @@ chromify.attachNavigator = function(node) {
   node.setAttribute('tabindex', '0');
   node.setAttribute('role', 'group');
   document.addEventListener('keydown',function(event){
-    let linearization = node.getAttribute('data-semantic-children').split(',');
+    console.log(node.getAttribute('data-semantic-collapsed'));
+    let skeleton = node.getAttribute('data-semantic-collapsed');
+    let replaced = skeleton.replace(/\(/g,'[').replace(/\)/g,']').replace(/ /g,',');
+    let linearization = JSON.parse(replaced);
     this.current = this.current == undefined ? 0 : this.current;
     let next = this.current;
     switch(event.keyCode){
@@ -110,4 +113,5 @@ chromify.attachNavigator = function(node) {
 chromify.attach = function() {
   let nodes = document.querySelectorAll('.mjx-chtml');
   chromify.rewriteExpression(nodes);
+  chromify.attachNavigator(nodes[0].firstChild);
 };
