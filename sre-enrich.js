@@ -43,6 +43,7 @@ const main = async (input) => {
     <body>
     ${out.html}
     <script src="chromify.js"></script>
+    <script>chromify.attach()</script>
     </body>
     </html>
     `
