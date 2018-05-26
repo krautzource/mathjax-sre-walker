@@ -89,6 +89,9 @@ chromify.attachNavigator = function(node) {
     let skeleton = node.getAttribute('data-semantic-collapsed');
     let replaced = skeleton.replace(/\(/g,'[').replace(/\)/g,']').replace(/ /g,',');
     let linearization = JSON.parse(replaced);
+    console.log(linearization);
+    let navigationStructure = chromify.makeTree(linearization);
+    console.log(navigationStructure);
     this.current = this.current == undefined ? 0 : this.current;
     let next = this.current;
     switch(event.keyCode){
@@ -115,3 +118,27 @@ chromify.attach = function() {
   chromify.rewriteExpression(nodes);
   chromify.attachNavigator(nodes[0].firstChild);
 };
+
+
+chromify.makeTree = function(list) {
+  if (!list.length) return;
+  let parent = new node(list[0]);
+  for (let i = 1, child; i < list.length; i++) {
+    let child = list[i];
+    let node = Array.isArray(child) ? chromify.makeTree(child) : new node(child);
+    child.parent = parent;
+    parent.children.push(child);
+  }
+  return parent;
+};
+
+class node {
+
+  constructor(id) {
+    this.id = id;
+    this.name = chromify.makeid(id);
+    this.parent = null;
+    this.children = [];
+  }
+  
+}
