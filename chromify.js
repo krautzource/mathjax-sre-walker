@@ -91,7 +91,6 @@ chromify.attachNavigator = function(node, count) {
   let replaced = skeleton.replace(/\(/g,'[').replace(/\)/g,']').replace(/ /g,',');
   let linearization = JSON.parse(replaced);
   let navigationStructure = chromify.makeTree(linearization, count);
-  console.log(navigationStructure);
   chromify.navigators[node.id] = new tree(navigationStructure);
   document.addEventListener('keydown',function(event){
     let navigator = chromify.navigators[event.target.id];
@@ -109,6 +108,8 @@ chromify.attachNavigator = function(node, count) {
     case 40: //down
       navigator.down();
       break;
+    default:
+      break;
     }
     chromify.highlight(navigator.active);
     node.setAttribute('aria-activedescendant', navigator.active.name);
@@ -118,12 +119,10 @@ chromify.attachNavigator = function(node, count) {
 chromify.attach = function() {
   let nodes = document.querySelectorAll('.mjx-chtml');
   chromify.rewriteExpression(nodes);
-  // chromify.attachNavigator(nodes[0].firstChild);
 };
 
 
 chromify.makeTree = function(list, count) {
-  console.log(count);
   if (!list.length) return;
   let parent = new node(list[0], chromify.makeid(count, list[0]));
   for (let i = 1, child; i < list.length; i++) {
@@ -193,7 +192,7 @@ chromify.highlight = function(node) {
 };
 
 chromify.unhighlight = function(node) {
-  chromify.background(node, 'white');
+  chromify.background(node, '');
 };
 
 
