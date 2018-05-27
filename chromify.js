@@ -199,6 +199,5 @@ chromify.unhighlight = function(node) {
 
 chromify.background = function(node, color) {
   let domNode = document.getElementById(node.name);
-  console.log(domNode.style.background);
   domNode.style = 'background:' + color;
 };
