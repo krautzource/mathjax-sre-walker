@@ -95,9 +95,7 @@ chromify.attachNavigator = function(node, count) {
   chromify.navigators[node.id] = new tree(navigationStructure);
   document.addEventListener('keydown',function(event){
     let navigator = chromify.navigators[event.target.id];
-    console.log('Before'); 
-   console.log(navigator.active);
-    chromify.unhighlight(event.target, navigator.active);
+    chromify.unhighlight(navigator.active);
     switch(event.keyCode){
     case 37: //left
       navigator.left();
@@ -112,9 +110,7 @@ chromify.attachNavigator = function(node, count) {
       navigator.down();
       break;
     }
-    console.log('After');
-    console.log(navigator.active);
-    chromify.highlight(event.target, navigator.active);
+    chromify.highlight(navigator.active);
     node.setAttribute('aria-activedescendant', navigator.active.name);
   });
 };
@@ -192,12 +188,16 @@ class tree {
 }
 
 
-chromify.highlight = function(root, node) {
-  let domNode = document.getElementById(node.name);
-  domNode.style = 'background:lightblue';
+chromify.highlight = function(node) {
+  chromify.background(node, 'lightblue');
 };
 
-chromify.unhighlight = function(root, node) {
+chromify.unhighlight = function(node) {
+  chromify.background(node, 'white');
+};
+
+
+chromify.background = function(node, color) {
   let domNode = document.getElementById(node.name);
-  domNode.style = 'background:white';
+  domNode.style = 'background:' + color;
 };
