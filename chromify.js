@@ -55,11 +55,11 @@ chromify.rewriteNode = function (node, c) {
 
 
 chromify.rewriteExpression = function (nodes) {
-    let c = 0;
-    for (const node of nodes) {
-        chromify.rewriteNode(node, c++);
-        chromify.attachNavigator(node.firstChild);
-    }
+  let c = 0;
+  for (const node of nodes) {
+    chromify.rewriteNode(node, c++);
+    chromify.attachNavigator(node.firstChild, c);
+  }
 };
 
 /**
@@ -81,17 +81,18 @@ chromify.KeyCode = {
   TAB: 9
 };
 
-chromify.attachNavigator = function(node) {
+chromify.attachNavigator = function(node, count) {
   node.setAttribute('tabindex', '0');
   node.setAttribute('role', 'group');
+  console.log(count);
+  console.log(node);
+  let skeleton = node.getAttribute('data-semantic-collapsed');
+  console.log(skeleton);
+  let replaced = skeleton.replace(/\(/g,'[').replace(/\)/g,']').replace(/ /g,',');
+  let linearization = JSON.parse(replaced);
+  let navigationStructure = chromify.makeTree(linearization, count);
+  console.log(navigationStructure);
   document.addEventListener('keydown',function(event){
-    console.log(node.getAttribute('data-semantic-collapsed'));
-    let skeleton = node.getAttribute('data-semantic-collapsed');
-    let replaced = skeleton.replace(/\(/g,'[').replace(/\)/g,']').replace(/ /g,',');
-    let linearization = JSON.parse(replaced);
-    console.log(linearization);
-    let navigationStructure = chromify.makeTree(linearization);
-    console.log(navigationStructure);
     this.current = this.current == undefined ? 0 : this.current;
     let next = this.current;
     switch(event.keyCode){
@@ -116,16 +117,18 @@ chromify.attachNavigator = function(node) {
 chromify.attach = function() {
   let nodes = document.querySelectorAll('.mjx-chtml');
   chromify.rewriteExpression(nodes);
-  chromify.attachNavigator(nodes[0].firstChild);
+  // chromify.attachNavigator(nodes[0].firstChild);
 };
 
 
-chromify.makeTree = function(list) {
+chromify.makeTree = function(list, count) {
+  console.log(count);
   if (!list.length) return;
-  let parent = new node(list[0]);
+  let parent = new node(list[0], chromify.makeid(count, list[0]));
   for (let i = 1, child; i < list.length; i++) {
     let child = list[i];
-    let node = Array.isArray(child) ? chromify.makeTree(child) : new node(child);
+    let node = Array.isArray(child) ? chromify.makeTree(child, count) :
+        new node(child, chromify.makeid(count, child));
     child.parent = parent;
     parent.children.push(child);
   }
