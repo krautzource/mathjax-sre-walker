@@ -81,36 +81,37 @@ chromify.KeyCode = {
   TAB: 9
 };
 
+chromify.navigators = {};
+
 chromify.attachNavigator = function(node, count) {
   node.setAttribute('tabindex', '0');
   node.setAttribute('role', 'group');
-  console.log(count);
-  console.log(node);
   let skeleton = node.getAttribute('data-semantic-collapsed');
-  console.log(skeleton);
   let replaced = skeleton.replace(/\(/g,'[').replace(/\)/g,']').replace(/ /g,',');
   let linearization = JSON.parse(replaced);
   let navigationStructure = chromify.makeTree(linearization, count);
-  console.log(navigationStructure);
+  chromify.navigators[node.id] = new tree(navigationStructure);
   document.addEventListener('keydown',function(event){
-    this.current = this.current == undefined ? 0 : this.current;
-    let next = this.current;
+    let navigator = chromify.navigators[event.target.id];
+    console.log('Before'); 
+   console.log(navigator);
     switch(event.keyCode){
     case 37: //left
-      next -= 1;
+      navigator.left();
       break;
     case 38: //up
+      navigator.up();
       break;
     case 39: //right
-      next += 1;
+      navigator.right();
       break;
     case 40: //down
+      navigator.down();
       break;
     }
-    if (next >= 0 && next < linearization.length) {
-      node.setAttribute('aria-activedescendant', linearization[next]);
-      this.current = next;
-    }
+    console.log('After');
+    console.log(navigator);
+    node.setAttribute('aria-activedescendant', navigator.active.name);
   });
 };
 
@@ -142,6 +143,46 @@ class node {
     this.name = name;
     this.parent = null;
     this.children = [];
+  }
+  
+}
+
+
+class tree {
+
+  constructor(root) {
+    this.root = root;
+    this.active = root;
+  }
+
+  up() {
+    if (this.active.parent) {
+      this.active = this.active.parent;
+    }
+  }
+  
+  down() {
+    if (this.active.children.length) {
+      this.active = this.active.children[0];
+    }
+  }
+  
+  left() {
+    if (this.active.parent) {
+      let index = this.active.parent.children.indexOf(this.active);
+      if (index > 0) {
+        this.active = this.active.parent.children[index - 1];
+      }
+    }
+  }
+  
+  right() {
+    if (this.active.parent) {
+      let index = this.active.parent.children.indexOf(this.active);
+      if (index < this.active.parent.children.length - 1) {
+        this.active = this.active.parent.children[index + 1];
+      }
+    }
   }
   
 }
