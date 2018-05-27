@@ -57,8 +57,9 @@ chromify.rewriteNode = function (node, c) {
 chromify.rewriteExpression = function (nodes) {
   let c = 0;
   for (const node of nodes) {
-    chromify.rewriteNode(node, c++);
+    chromify.rewriteNode(node, c);
     chromify.attachNavigator(node.firstChild, c);
+    c++;
   }
 };
 
@@ -96,6 +97,7 @@ chromify.attachNavigator = function(node, count) {
     let navigator = chromify.navigators[event.target.id];
     console.log('Before'); 
    console.log(navigator.active);
+    chromify.unhighlight(event.target, navigator.active);
     switch(event.keyCode){
     case 37: //left
       navigator.left();
@@ -112,6 +114,7 @@ chromify.attachNavigator = function(node, count) {
     }
     console.log('After');
     console.log(navigator.active);
+    chromify.highlight(event.target, navigator.active);
     node.setAttribute('aria-activedescendant', navigator.active.name);
   });
 };
@@ -187,3 +190,14 @@ class tree {
   }
   
 }
+
+
+chromify.highlight = function(root, node) {
+  let domNode = document.getElementById(node.name);
+  domNode.style = 'background:lightblue';
+};
+
+chromify.unhighlight = function(root, node) {
+  let domNode = document.getElementById(node.name);
+  domNode.style = 'background:white';
+};
