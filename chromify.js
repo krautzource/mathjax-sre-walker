@@ -119,7 +119,6 @@ chromify.attachNavigator = function(node, count) {
 chromify.attach = function() {
   let nodes = document.querySelectorAll('.mjx-chtml');
   chromify.rewriteExpression(nodes);
-  // chromify.attachNavigator(nodes[0].firstChild);
 };
 
 
