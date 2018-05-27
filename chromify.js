@@ -90,11 +90,12 @@ chromify.attachNavigator = function(node, count) {
   let replaced = skeleton.replace(/\(/g,'[').replace(/\)/g,']').replace(/ /g,',');
   let linearization = JSON.parse(replaced);
   let navigationStructure = chromify.makeTree(linearization, count);
+  console.log(navigationStructure);
   chromify.navigators[node.id] = new tree(navigationStructure);
   document.addEventListener('keydown',function(event){
     let navigator = chromify.navigators[event.target.id];
     console.log('Before'); 
-   console.log(navigator);
+   console.log(navigator.active);
     switch(event.keyCode){
     case 37: //left
       navigator.left();
@@ -110,7 +111,7 @@ chromify.attachNavigator = function(node, count) {
       break;
     }
     console.log('After');
-    console.log(navigator);
+    console.log(navigator.active);
     node.setAttribute('aria-activedescendant', navigator.active.name);
   });
 };
@@ -130,8 +131,8 @@ chromify.makeTree = function(list, count) {
     let child = list[i];
     let node = Array.isArray(child) ? chromify.makeTree(child, count) :
         new node(child, chromify.makeid(count, child));
-    child.parent = parent;
-    parent.children.push(child);
+    node.parent = parent;
+    parent.children.push(node);
   }
   return parent;
 };
