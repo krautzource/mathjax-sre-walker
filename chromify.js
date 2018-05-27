@@ -137,9 +137,9 @@ chromify.makeTree = function(list, count) {
 
 class node {
 
-  constructor(id) {
+  constructor(id, name) {
     this.id = id;
-    this.name = chromify.makeid(id);
+    this.name = name;
     this.parent = null;
     this.children = [];
   }
