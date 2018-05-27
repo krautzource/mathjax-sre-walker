@@ -41,7 +41,9 @@ const main = async (input) => {
         </style>
     </head>
     <body>
+    <p>The solution to the quadratic equation</p>
     ${out.html}
+    <p>is really overused as an example.</p>
     <script src="chromify.js"></script>
     <script>chromify.attach()</script>
     </body>
