@@ -133,13 +133,14 @@ chromify.attach = function() {
 };
 
 
-chromify.makeTree = function(list, count) {
-  if (!list.length) return;
-  let parent = new node(list[0], chromify.makeid(count, list[0]));
-  for (let i = 1, child; i < list.length; i++) {
-    let child = list[i];
-    let newnode = Array.isArray(child) ? chromify.makeTree(child, count) :
-        new node(child, chromify.makeid(count, child));
+chromify.makeTree = function(sexp, count) {
+  if (!Array.isArray(sexp)) {
+    return new node(sexp, chromify.makeid(count, sexp));
+  }
+  let parent = new node(sexp[0], chromify.makeid(count, sexp[0]));
+  for (let i = 1, child; i < sexp.length; i++) {
+    let child = sexp[i];
+    let newnode = chromify.makeTree(child, count);
     newnode.parent = parent;
     parent.children.push(newnode);
   }
