@@ -103,7 +103,7 @@ chromify.attachNavigator = function(node, count) {
   let linearization = JSON.parse(replaced);
   let navigationStructure = chromify.makeTree(linearization, count);
   chromify.navigators[node.id] = new tree(navigationStructure);
-  document.addEventListener('keydown',function(event){
+  node.addEventListener('keydown',function(event){
     let navigator = chromify.navigators[event.target.id];
     chromify.unhighlight(navigator.active);
     switch(event.keyCode){
