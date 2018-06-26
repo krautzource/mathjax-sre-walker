@@ -47,12 +47,11 @@ chromify.rewriteNode = function (node, c) {
   if (node.nodeType === 3) {
     if (node.parentNode.closest('svg')) return;
     // if (node.textContent.trim() === '') return;
-    let div = document.createElement('div');
+    let span = document.createElement('span');
     let parent = node.parentNode;
-    div.setAttribute('style','display:inline');
-    div.appendChild(node);
-    div.setAttribute('aria-hidden', true);
-    parent.appendChild(div);
+    span.appendChild(node);
+    span.setAttribute('aria-hidden', true);
+    parent.appendChild(span);
     return;
   }
   node.removeAttribute('aria-hidden');
