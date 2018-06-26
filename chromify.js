@@ -45,6 +45,7 @@ chromify.nodetree = function (node, c) {
 
 chromify.rewriteNode = function (node, c) {
   if (node.nodeType === 3) {
+    if (node.parentNode.closest('svg')) return;
     // if (node.textContent.trim() === '') return;
     let div = document.createElement('div');
     let parent = node.parentNode;
@@ -69,7 +70,7 @@ chromify.rewriteExpression = function (nodes) {
   let c = 0;
   for (const node of nodes) {
     chromify.rewriteNode(node, c);
-    chromify.attachNavigator(node.firstChild, c);
+    chromify.attachNavigator(node, c);
     c++;
   }
 };
@@ -98,7 +99,7 @@ chromify.navigators = {};
 chromify.attachNavigator = function(node, count) {
   node.setAttribute('tabindex', '0');
   node.setAttribute('role', 'group');
-  let skeleton = node.getAttribute('data-semantic-collapsed');
+  let skeleton = node.getAttribute('data-semantic-structure');
   let replaced = skeleton.replace(/\(/g,'[').replace(/\)/g,']').replace(/ /g,',');
   let linearization = JSON.parse(replaced);
   let navigationStructure = chromify.makeTree(linearization, count);
@@ -128,7 +129,7 @@ chromify.attachNavigator = function(node, count) {
 };
 
 chromify.attach = function() {
-  let nodes = document.querySelectorAll('.mjx-chtml');
+  let nodes = document.querySelectorAll('[data-semantic-structure]');
   chromify.rewriteExpression(nodes);
 };
 
@@ -138,10 +139,10 @@ chromify.makeTree = function(list, count) {
   let parent = new node(list[0], chromify.makeid(count, list[0]));
   for (let i = 1, child; i < list.length; i++) {
     let child = list[i];
-    let node = Array.isArray(child) ? chromify.makeTree(child, count) :
+    let newnode = Array.isArray(child) ? chromify.makeTree(child, count) :
         new node(child, chromify.makeid(count, child));
-    node.parent = parent;
-    parent.children.push(node);
+    newnode.parent = parent;
+    parent.children.push(newnode);
   }
   return parent;
 };
@@ -209,5 +210,6 @@ chromify.unhighlight = function(node) {
 
 chromify.background = function(node, color) {
   let domNode = document.getElementById(node.name);
-  domNode.style = 'background:' + color;
+  if (domNode.closest('svg')) domNode.setAttribute('class', color);
+  else domNode.style = 'color:' + color;
 };
