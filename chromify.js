@@ -101,8 +101,7 @@ chromify.attachNavigator = function(node, count) {
   let replaced = skeleton.replace(/\(/g,'[').replace(/\)/g,']').replace(/ /g,',');
   let linearization = JSON.parse(replaced);
   let navigationStructure = chromify.makeTree(linearization, count);
-  let navigator = new tree(navigationStructure);
-  node.addEventListener('keydown', navigator.move.bind(navigator));
+  new navigator(node, new tree(navigationStructure));
 };
 
 chromify.attach = function() {
@@ -174,38 +173,49 @@ class tree {
     }
   }
 
+}
+
+
+class navigator {
+
+  constructor(node, tree) {
+    this.node = node;
+    this.tree = tree;
+    this.node.addEventListener('keydown', this.move.bind(this));
+  }
+  
   move(event) {
-    chromify.unhighlight(this.active);
+    this.unhighlight(this.tree.active);
     switch(event.keyCode){
     case 37: //left
-      this.left();
+      this.tree.left();
       break;
     case 38: //up
-      this.up();
+      this.tree.up();
       break;
     case 39: //right
-      this.right();
+      this.tree.right();
       break;
     case 40: //down
-      this.down();
+      this.tree.down();
       break;
     default:
       break;
     }
-    chromify.highlight(this.active);
-    node.setAttribute('aria-activedescendant', this.active.name);
+    this.highlight(this.tree.active);
+    node.setAttribute('aria-activedescendant', this.tree.active.name);
   }
   
+  highlight(node) {
+    chromify.background(node, 'lightblue');
+  }
+  
+  unhighlight(node) {
+    chromify.background(node, '');
+  }
+
+
 }
-
-
-chromify.highlight = function(node) {
-  chromify.background(node, 'lightblue');
-};
-
-chromify.unhighlight = function(node) {
-  chromify.background(node, '');
-};
 
 
 chromify.background = function(node, color) {
