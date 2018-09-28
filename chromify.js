@@ -102,29 +102,10 @@ chromify.attachNavigator = function(node, count) {
   let replaced = skeleton.replace(/\(/g,'[').replace(/\)/g,']').replace(/ /g,',');
   let linearization = JSON.parse(replaced);
   let navigationStructure = chromify.makeTree(linearization, count);
-  chromify.navigators[node.id] = new tree(navigationStructure);
-  node.addEventListener('keydown',function(event){
-    let navigator = chromify.navigators[event.target.id];
-    chromify.unhighlight(navigator.active);
-    switch(event.keyCode){
-    case 37: //left
-      navigator.left();
-      break;
-    case 38: //up
-      navigator.up();
-      break;
-    case 39: //right
-      navigator.right();
-      break;
-    case 40: //down
-      navigator.down();
-      break;
-    default:
-      break;
-    }
-    chromify.highlight(navigator.active);
-    node.setAttribute('aria-activedescendant', navigator.active.name);
-  });
+  let navigator = new tree(navigationStructure);
+  // chromify.navigators[node.id] = new tree(navigationStructure);
+  node.addEventListener('keydown', function(event) {navigator.move(event);}.bind(navigator));
+  node.addEventListener('keydown', navigator.move.bind(navigator));
 };
 
 chromify.attach = function() {
@@ -196,6 +177,29 @@ class tree {
     }
   }
 
+  move(event) {
+    // let navigator = chromify.navigators[event.target.id];
+    chromify.unhighlight(this.active);
+    switch(event.keyCode){
+    case 37: //left
+      this.left();
+      break;
+    case 38: //up
+      this.up();
+      break;
+    case 39: //right
+      this.right();
+      break;
+    case 40: //down
+      this.down();
+      break;
+    default:
+      break;
+    }
+    chromify.highlight(this.active);
+    node.setAttribute('aria-activedescendant', this.active.name);
+  }
+  
 }
 
 
