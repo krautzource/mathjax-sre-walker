@@ -43,6 +43,12 @@ chromify.nodetree = function (node, c) {
     }
 }
 
+
+/**
+ * Rewrites the DOM node.
+ * @param {Node} node The DOM node to rewrite.
+ * @param {number} c The counter that helps to disambiguate the semantic node ids.
+ */
 chromify.rewriteNode = function (node, c) {
   if (node.nodeType === 3) {
     if (node.parentNode.closest('svg')) return;
@@ -94,6 +100,12 @@ chromify.KeyCode = {
 };
 
 
+/**
+ * Attaches a navigator to the DOM node.
+ * @param {Node} node The target node.
+ * @param {number} c The counter that helps to disambiguate the semantic node
+ *     ids.
+ */
 chromify.attachNavigator = function(node, count) {
   node.setAttribute('tabindex', '0');
   node.setAttribute('role', 'group');
