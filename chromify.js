@@ -93,7 +93,6 @@ chromify.KeyCode = {
   TAB: 9
 };
 
-chromify.navigators = {};
 
 chromify.attachNavigator = function(node, count) {
   node.setAttribute('tabindex', '0');
@@ -103,8 +102,6 @@ chromify.attachNavigator = function(node, count) {
   let linearization = JSON.parse(replaced);
   let navigationStructure = chromify.makeTree(linearization, count);
   let navigator = new tree(navigationStructure);
-  // chromify.navigators[node.id] = new tree(navigationStructure);
-  node.addEventListener('keydown', function(event) {navigator.move(event);}.bind(navigator));
   node.addEventListener('keydown', navigator.move.bind(navigator));
 };
 
@@ -178,7 +175,6 @@ class tree {
   }
 
   move(event) {
-    // let navigator = chromify.navigators[event.target.id];
     chromify.unhighlight(this.active);
     switch(event.keyCode){
     case 37: //left
