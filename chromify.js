@@ -183,9 +183,13 @@ class navigator {
     this.tree = tree;
     this.node.addEventListener('keydown', this.move.bind(this));
   }
+
+  active() {
+    return this.tree.active;
+  }
   
   move(event) {
-    this.unhighlight(this.tree.active);
+    this.unhighlight();
     switch(event.keyCode){
     case 37: //left
       this.tree.left();
@@ -202,16 +206,16 @@ class navigator {
     default:
       break;
     }
-    this.highlight(this.tree.active);
-    node.setAttribute('aria-activedescendant', this.tree.active.name);
+    this.highlight();
+    this.node.setAttribute('aria-activedescendant', this.active().name);
   }
   
-  highlight(node) {
-    chromify.background(node, 'lightblue');
+  highlight() {
+    chromify.background(this.active(), 'lightblue');
   }
   
-  unhighlight(node) {
-    chromify.background(node, '');
+  unhighlight() {
+    chromify.background(this.active(), '');
   }
 
 
