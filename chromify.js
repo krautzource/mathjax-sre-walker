@@ -43,6 +43,12 @@ chromify.nodetree = function (node, c) {
     }
 }
 
+
+/**
+ * Rewrites the DOM node.
+ * @param {Node} node The DOM node to rewrite.
+ * @param {number} c The counter that helps to disambiguate the semantic node ids.
+ */
 chromify.rewriteNode = function (node, c) {
   if (node.nodeType === 3) {
     if (node.parentNode.closest('svg')) return;
@@ -93,8 +99,13 @@ chromify.KeyCode = {
   TAB: 9
 };
 
-chromify.navigators = {};
 
+/**
+ * Attaches a navigator to the DOM node.
+ * @param {Node} node The target node.
+ * @param {number} c The counter that helps to disambiguate the semantic node
+ *     ids.
+ */
 chromify.attachNavigator = function(node, count) {
   node.setAttribute('tabindex', '0');
   node.setAttribute('role', 'group');
@@ -102,29 +113,7 @@ chromify.attachNavigator = function(node, count) {
   let replaced = skeleton.replace(/\(/g,'[').replace(/\)/g,']').replace(/ /g,',');
   let linearization = JSON.parse(replaced);
   let navigationStructure = chromify.makeTree(linearization, count);
-  chromify.navigators[node.id] = new tree(navigationStructure);
-  node.addEventListener('keydown',function(event){
-    let navigator = chromify.navigators[event.target.id];
-    chromify.unhighlight(navigator.active);
-    switch(event.keyCode){
-    case 37: //left
-      navigator.left();
-      break;
-    case 38: //up
-      navigator.up();
-      break;
-    case 39: //right
-      navigator.right();
-      break;
-    case 40: //down
-      navigator.down();
-      break;
-    default:
-      break;
-    }
-    chromify.highlight(navigator.active);
-    node.setAttribute('aria-activedescendant', navigator.active.name);
-  });
+  new navigator(node, new tree(navigationStructure));
 };
 
 chromify.attach = function() {
@@ -199,13 +188,50 @@ class tree {
 }
 
 
-chromify.highlight = function(node) {
-  chromify.background(node, 'lightblue');
-};
+class navigator {
 
-chromify.unhighlight = function(node) {
-  chromify.background(node, '');
-};
+  constructor(node, tree) {
+    this.node = node;
+    this.tree = tree;
+    this.node.addEventListener('keydown', this.move.bind(this));
+  }
+
+  active() {
+    return this.tree.active;
+  }
+  
+  move(event) {
+    this.unhighlight();
+    switch(event.keyCode){
+    case 37: //left
+      this.tree.left();
+      break;
+    case 38: //up
+      this.tree.up();
+      break;
+    case 39: //right
+      this.tree.right();
+      break;
+    case 40: //down
+      this.tree.down();
+      break;
+    default:
+      break;
+    }
+    this.highlight();
+    this.node.setAttribute('aria-activedescendant', this.active().name);
+  }
+  
+  highlight() {
+    chromify.background(this.active(), 'lightblue');
+  }
+  
+  unhighlight() {
+    chromify.background(this.active(), '');
+  }
+
+
+}
 
 
 chromify.background = function(node, color) {
