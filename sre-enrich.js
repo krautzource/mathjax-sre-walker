@@ -1,3 +1,4 @@
+const fs = require('fs');
 const sre = require('speech-rule-engine');
 sre.setupEngine({
   domain: 'mathspeak',
@@ -28,9 +29,9 @@ const main = async input => {
     html: true,
     css: true,
     mml: true,
-    svg: true
+    svgNode: true
   });
-  console.log(
+  fs.writeFileSync('index.html',
     `<!DOCTYPE html>
     <html lang="en">
     <head>
@@ -46,7 +47,7 @@ const main = async input => {
     <body>
     <p>The solution to the quadratic equation</p>
     ${out.html}
-    ${out.svg}
+    ${out.svg.replace(/<title id="MathJax-SVG-1-Title">(.*)?<\/title>/, '<title id="MathJax-SVG-1-Title">' + out.svgNode.getAttribute('data-semantic-speech') + '</title>')}
     <p>is really overused as an example.</p>
     <script type="module" src="main.js"></script>
     </body>
@@ -59,15 +60,14 @@ const main = async input => {
 };
 
 let restart = function() {
-  if (!process.argv[2]) {
-    console.log('No input as CLI argument');
-    return;
-  }
   if (!sre.engineReady()) {
     setTimeout(restart, 200);
     return;
   }
-  main(process.argv[2]);
+  if (!process.argv[2]) {
+    console.log('No input as CLI argument; using default');
+  }
+  main(process.argv[2] || 'x={-b\\pm\\sqrt{b^2-4ac}\\over2a}');
 };
 
 restart();
