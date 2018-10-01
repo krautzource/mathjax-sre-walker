@@ -4,7 +4,8 @@ sre.setupEngine({
   style: 'default',
   locale: 'en',
   speech: 'deep',
-  structure: true
+  structure: true,
+  mode: "sync"
 });
 sre.engineReady();
 const mj = require('mathjax-node').typeset;
@@ -47,8 +48,7 @@ const main = async input => {
     ${out.html}
     ${out.svg}
     <p>is really overused as an example.</p>
-    <script src="chromify.js"></script>
-    <script>chromify.attach()</script>
+    <script type="module" src="main.js"></script>
     </body>
     </html>
     <div hidden>
@@ -59,6 +59,10 @@ const main = async input => {
 };
 
 let restart = function() {
+  if (!process.argv[2]) {
+    console.log('No input as CLI argument');
+    return;
+  }
   if (!sre.engineReady()) {
     setTimeout(restart, 200);
     return;
