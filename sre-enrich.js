@@ -29,6 +29,7 @@ const main = async input => {
     html: true,
     css: true,
     mml: true,
+    svg: true,
     svgNode: true
   });
   fs.writeFileSync('index.html',
@@ -45,6 +46,7 @@ const main = async input => {
         </style>
     </head>
     <body>
+    <p><strong>Try this</strong>: focus an equation (click on it or tab to it), then use the arrow keys. If you're using a screenreader, you'll need to switch out of virtual/browse mode for keys to work.</p>
     <p>The solution to the quadratic equation</p>
     ${out.html}
     ${out.svg.replace(/<title id="MathJax-SVG-1-Title">(.*)?<\/title>/, '<title id="MathJax-SVG-1-Title">' + out.svgNode.getAttribute('data-semantic-speech') + '</title>')}
