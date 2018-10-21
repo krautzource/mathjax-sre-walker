@@ -46,10 +46,11 @@ const main = async input => {
         </style>
     </head>
     <body>
+    <p>For development, this demo requires a browser with support for ES6 modules. Try current Firefox, e.g., with NVDA or JAWS.</p>
     <p><strong>Try this</strong>: focus an equation (click on it or tab to it), then use the arrow keys. If you're using a screenreader, you'll need to switch out of virtual/browse mode for keys to work.</p>
     <p>The solution to the quadratic equation</p>
     ${out.html}
-    ${out.svg.replace(/<title id="MathJax-SVG-1-Title">(.*)?<\/title>/, '<title id="MathJax-SVG-1-Title">' + out.svgNode.getAttribute('data-semantic-speech') + '</title>')}
+    ${out.svg.replace(/<title id="MathJax-SVG-1-Title">(.*)?<\/title>/, '<title id="MathJax-SVG-1-Title">' + out.svgNode.getAttribute('data-semantic-speech') + '</title>').replace(/focusable="false"/g, '')}
     <p>is really overused as an example.</p>
     <script type="module" src="main.js"></script>
     </body>
