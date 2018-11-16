@@ -16,6 +16,10 @@ const setid = function (node, c) {
 const speechers = function (node) {
   if (node.hasAttribute('data-semantic-speech')) {
     node.setAttribute('aria-label', node.getAttribute('data-semantic-speech'));
+    node.setAttribute('role', 'math')
+  }
+  else {
+    node.setAttribute('role', 'presentation')
   }
 }
 
