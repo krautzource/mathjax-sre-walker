@@ -1,9 +1,8 @@
-import {makeid} from './helpers.mjs';
+import { makeid } from './helpers.mjs';
 
 /**
  * The basic tree for the light walker.
  */
-
 
 export const makeTree = function(sexp, count) {
   if (!Array.isArray(sexp)) {
@@ -65,4 +64,3 @@ export class tree {
     }
   }
 }
-
