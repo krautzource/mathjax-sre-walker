@@ -1,27 +1,27 @@
-import { makeid } from './helpers.mjs'
+import { makeid } from './helpers.mjs';
 
 const ariaowners = function (node, c) {
     if (node.hasAttribute('data-semantic-children')) {
         let ids = node.getAttribute('data-semantic-children').split(/,/);
         node.setAttribute('aria-owns', ids.map(n => makeid(c, n)).join(' '));
     }
-}
+};
 
 const setid = function (node, c) {
     if (node.hasAttribute('data-semantic-id')) {
         node.id = makeid(c, node.getAttribute('data-semantic-id'));
     }
-}
+};
 
 const speechers = function (node) {
   if (node.hasAttribute('data-semantic-speech')) {
     node.setAttribute('aria-label', node.getAttribute('data-semantic-speech'));
-    node.setAttribute('role', 'math')
+    node.setAttribute('role', 'math');
   }
   else {
-    node.setAttribute('role', 'presentation')
+    node.setAttribute('role', 'presentation');
   }
-}
+};
 
 
 /**
