@@ -45,8 +45,9 @@ function rewriteNodeRec (node, snode) {
       node.querySelector(`[data-semantic-id="${snode.id}"]`);
   domNode.setAttribute('id', snode.name);
   let owned = snode.children.map(n => n.name);
+  console.log(owned);
   if (owned.length) {
-    node.setAttribute('aria-owns', owned.join(' '));
+    domNode.setAttribute('aria-owns', owned.join(' '));
     snode.children.forEach(x => rewriteNodeRec(node, x));
   }
 };
