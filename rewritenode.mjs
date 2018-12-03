@@ -41,10 +41,8 @@ export function rewriteNode (node, tree) {
  * @param {number} c The counter that helps to disambiguate the semantic node ids.
  */
 function rewriteNodeRec (node, snode) {
-  console.log(node);
-  let domNode = node.querySelector(`[data-semantic-id="${snode.id}"]`);
-  console.log(domNode);
-  console.log(snode);
+  let domNode = node.getAttribute('data-semantic-id') == snode.id ? node :
+      node.querySelector(`[data-semantic-id="${snode.id}"]`);
   domNode.setAttribute('id', snode.name);
   let owned = snode.children.map(n => n.name);
   if (owned.length) {
