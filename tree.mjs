@@ -29,9 +29,10 @@ class node {
 }
 
 export class tree {
-  constructor(root) {
+  constructor(root, offset) {
     this.root = root;
     this.active = root;
+    this.offset = offset;
   }
 
   up() {

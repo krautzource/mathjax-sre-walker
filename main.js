@@ -17,14 +17,14 @@ const rewriteSkeleton = function(node, count) {
       .replace(/ /g, ',');
   let linearization = JSON.parse(replaced);
   let navigationStructure = makeTree(linearization, count);
-  return new tree(navigationStructure);
+  return new tree(navigationStructure, count);
 };
 
 document.querySelectorAll('[data-semantic-structure]').forEach((node, index)=>{
   node.setAttribute('tabindex', '0');
   node.setAttribute('role', 'group');
   let tree = rewriteSkeleton(node, index);
-  rewriteNode(node, index);
+  rewriteNode(node, tree);
   attachNavigator(node, tree);
 });
 

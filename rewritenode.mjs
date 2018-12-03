@@ -27,9 +27,38 @@ const speechers = function (node) {
 /**
  * Rewrites the DOM node.
  * @param {Node} node The DOM node to rewrite.
+ * @param {Tree} tree The semantic tree structure.
+ */
+export function rewriteNode (node, tree) {
+  console.log(tree);
+  rewriteNodeRec(node, tree.root);
+};
+
+
+/**
+ * Rewrites the DOM node.
+ * @param {Node} node The DOM node to rewrite.
  * @param {number} c The counter that helps to disambiguate the semantic node ids.
  */
-export function rewriteNode (node, c) {
+function rewriteNodeRec (node, snode) {
+  console.log(node);
+  let domNode = node.querySelector(`[data-semantic-id="${snode.id}"]`);
+  console.log(domNode);
+  console.log(snode);
+  domNode.setAttribute('id', snode.name);
+  let owned = snode.children.map(n => n.name);
+  if (owned.length) {
+    node.setAttribute('aria-owns', owned.join(' '));
+    snode.children.forEach(x => rewriteNodeRec(node, x));
+  }
+};
+
+/**
+ * Rewrites the DOM node.
+ * @param {Node} node The DOM node to rewrite.
+ * @param {number} c The counter that helps to disambiguate the semantic node ids.
+ */
+function rewriteNodeRecOld (node, c) {
   if (node.nodeType === 3) {
     if (node.parentNode.closest('svg')) return;
     // if (node.textContent.trim() === '') return;
@@ -45,7 +74,7 @@ export function rewriteNode (node, c) {
   setid(node, c);
   speechers(node);
   for (const child of node.childNodes) {
-    rewriteNode(child, c);
+    rewriteNodeRec(child, c);
   }
 };
 
