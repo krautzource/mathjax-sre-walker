@@ -21,8 +21,10 @@ const rewriteSkeleton = function(node, count) {
 };
 
 document.querySelectorAll('[data-semantic-structure]').forEach((node, index)=>{
+  node.setAttribute('tabindex', '0');
+  node.setAttribute('role', 'group');
   let tree = rewriteSkeleton(node, index);
-  rewriteNode(node, tree);
+  rewriteNode(node, index);
   attachNavigator(node, tree);
 });
 
