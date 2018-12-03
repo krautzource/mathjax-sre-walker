@@ -1,7 +1,7 @@
 const speechers = function (node) {
   if (node.hasAttribute('data-semantic-speech')) {
     node.setAttribute('aria-label', node.getAttribute('data-semantic-speech'));
-    node.setAttribute('role', 'math');
+    node.setAttribute('role', 'group');
   }
   else {
     node.setAttribute('role', 'presentation');
