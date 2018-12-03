@@ -1,4 +1,3 @@
-import {makeTree, tree} from './tree.mjs';
 /**
  * Attaches a navigator to the DOM node.
  * @param {Node} node The target node.
