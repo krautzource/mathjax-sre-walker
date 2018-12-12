@@ -13,6 +13,8 @@ class navigator {
     this.node = node;
     this.tree = tree;
     this.node.addEventListener('keydown', this.move.bind(this));
+    this.node.addEventListener('focusin', this.highlight.bind(this));
+    this.node.addEventListener('focusout', this.unhighlight.bind(this));
   }
 
   active() {
