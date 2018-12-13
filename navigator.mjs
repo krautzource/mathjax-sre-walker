@@ -13,8 +13,8 @@ class navigator {
     this.node = node;
     this.tree = tree;
     this.node.addEventListener('keydown', this.move.bind(this));
-    this.node.addEventListener('focusin', this.highlight.bind(this));
-    this.node.addEventListener('focusout', this.unhighlight.bind(this));
+    this.node.addEventListener('focusin', this.highlight.bind(this, true));
+    this.node.addEventListener('focusout', this.highlight.bind(this, false));
   }
 
   active() {
@@ -22,7 +22,7 @@ class navigator {
   }
 
   move(event) {
-    this.unhighlight();
+    this.highlight(false);
     switch (event.keyCode) {
       case 37: //left
         this.tree.left();
@@ -39,21 +39,17 @@ class navigator {
       default:
         break;
     }
-    this.highlight();
+    this.highlight(true);
     this.node.setAttribute('aria-activedescendant', this.active().name);
   }
 
-  highlight() {
-    background(this.active(), 'lightblue');
-  }
-
-  unhighlight() {
-    background(this.active(), '');
+  highlight(boolean) {
+    const activedescendant =
+      this.active().name === this.node.id
+        ? this.node
+        : this.node.querySelector('#' + this.active().name);
+    if (boolean === true) activedescendant.classList.add('is-activedescendant');
+    if (boolean === false)
+      activedescendant.classList.remove('is-activedescendant');
   }
 }
-
-const background = function(node, color) {
-  let domNode = document.getElementById(node.name);
-  if (domNode.closest('svg')) domNode.setAttribute('class', color);
-  else domNode.style = 'color:' + color;
-};
