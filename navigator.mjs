@@ -23,6 +23,9 @@ class navigator {
 
   move(event) {
     this.highlight(false);
+    if ([32, 37, 38, 39, 40].indexOf(event.keyCode) > -1) {
+      event.preventDefault();
+    }
     switch (event.keyCode) {
       case 37: //left
         this.tree.left();
