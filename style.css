@@ -1,0 +1,17 @@
+.is-activedescendant {
+  color: #f012be !important;
+}
+
+[data-semantic-structure]:focus {
+  background-color: black;
+  color: #ffff;
+}
+
+figure .is-activedescendant {
+  outline: 1px solid  #f012be;
+}
+
+body {
+  margin: 2em;
+  font-size: 2em;
+}
