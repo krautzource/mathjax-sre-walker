@@ -73,6 +73,7 @@ const main = async input => {
     <script type="module" src="main.js"></script>
     </body>
     </html>
+
     `
   );
 };

@@ -3,7 +3,7 @@
 <path data-semantic-id="0" data-semantic-speech="grey front wall" fill="url(#o)" d="M520.46 487.66L368.91 336 217.37 487.66v179.82c0 1.75.36 3.4 1 4.92a12.61 12.61 0 0 0 2.69 4.02 12.61 12.61 0 0 0 4.02 2.68c1.51.64 3.17 1.01 4.92 1.01h277.83c1.75 0 3.4-.37 4.92-1a12.61 12.61 0 0 0 4.02-2.69 12.61 12.61 0 0 0 2.68-4.02c.64-1.51 1.01-3.17 1.01-4.92V487.66z" overflow="visible" style="marker:none" transform="translate(-174.44 -290.74)"/>
 <g data-semantic-id="1" data-semantic-speech="a dark grey roof with a red chimney">
 <path data-semantic-id="2" data-semantic-speech="a red chimney" fill="#a00" d="M55.54 25.25c-1.74 0-3.38.39-4.89 1.03-1.51.64-2.88 1.5-4.03 2.65a12.65 12.65 0 0 0-3.68 8.96v159.03l67.05-67.12V37.89a12.65 12.65 0 0 0-3.68-8.95 12.55 12.55 0 0 0-4.04-2.66 12.64 12.64 0 0 0-4.92-1.03h-41.8z" overflow="visible" style="marker:none"/>
-<path data-semantic-id="3" data-semantic-speech="a dark grey doof" fill="#4c4c4c" d="M194.25 0a18.72 18.72 0 0 0-12.97 5.48L5.48 181.38a18.73 18.73 0 1 0 26.5 26.5l162.5-162.61 162.49 162.6a18.73 18.73 0 1 0 26.49-26.48L207.77 5.48A18.72 18.72 0 0 0 194.25 0z" overflow="visible" style="marker:none"/>
+<path data-semantic-id="3" data-semantic-speech="a dark grey, mono-pitched roof" fill="#4c4c4c" d="M194.25 0a18.72 18.72 0 0 0-12.97 5.48L5.48 181.38a18.73 18.73 0 1 0 26.5 26.5l162.5-162.61 162.49 162.6a18.73 18.73 0 1 0 26.49-26.48L207.77 5.48A18.72 18.72 0 0 0 194.25 0z" overflow="visible" style="marker:none"/>
 </g>
 <g data-semantic-id="4" data-semantic-speech="a blue door with a doorknob">
 <g data-semantic-id="5" data-semantic-speech="a blue door with a shimmer">
