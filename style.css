@@ -7,8 +7,9 @@
   color: #ffff;
 }
 
-figure .is-activedescendant {
-  outline: 1px solid  #f012be;
+figure .is-activedescendant,
+figure .is-activedescendant * {
+  outline: 1px solid #f012be;
 }
 
 body {
