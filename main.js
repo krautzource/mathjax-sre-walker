@@ -23,7 +23,7 @@ document
   .querySelectorAll('[data-semantic-structure]')
   .forEach((node, index) => {
     node.setAttribute('tabindex', '0');
-    node.setAttribute('role', 'math');
+    node.setAttribute('role', 'tree');
     let tree = rewriteSkeleton(node, index);
     rewriteNode(node, tree);
     attachNavigator(node, tree);
