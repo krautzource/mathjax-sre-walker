@@ -1,6 +1,6 @@
 {
   "name": "mathjax-sre-walker",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": " A lightweight walker for server-side generated mathjax rendering",
   "main": "chromify.js",
   "scripts": {
