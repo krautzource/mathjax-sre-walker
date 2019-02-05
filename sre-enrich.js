@@ -66,10 +66,16 @@ const main = async input => {
     <p>is really overused as an example.</p>
     <h2>A non-equation</h2>
     <p>The same method works for other complex content as well.</p>
-    <figure>
+    <figure class="house">
     ${ fs.readFileSync('image.svg')}
-        <figcaption><a href="https://commons.wikimedia.org/wiki/File:House.svg">barretr (Open Clip Art Library) [CC0], via Wikimedia Commons</a></figcaption>
-        </figure>
+      <figcaption><a href="https://commons.wikimedia.org/wiki/File:House.svg">barretr (Open Clip Art Library) [CC0], via Wikimedia Commons</a></figcaption>
+    </figure>
+    <h2>A chemical diagram</h2>
+    <p>Another example using a chemical diagram.</p>
+    <figure class="aspirin">
+    ${ fs.readFileSync('Aspirin-skeletal.svg')}
+      <figcaption><a href="https://commons.wikimedia.org/wiki/File:Aspirin-skeletal.svg">Originally User:Benjah-bmm27 [Public domain], via Wikimedia Commons</a></figcaption>
+    </figure>
     <script type="module" src="main.js"></script>
     </body>
     </html>

@@ -7,9 +7,20 @@
   color: #ffff;
 }
 
-figure .is-activedescendant,
-figure .is-activedescendant * {
+.house .is-activedescendant,
+.house .is-activedescendant * {
   outline: 1px solid #f012be;
+}
+
+.aspirin svg:focus, .aspirin svg:focus * {
+  fill: #ffff;
+  stroke: #ffff;
+}
+
+.aspirin svg .is-activedescendant,
+.aspirin svg .is-activedescendant * {
+  fill: #f012be;
+  stroke: #f012be;
 }
 
 body {
