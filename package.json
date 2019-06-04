@@ -23,5 +23,8 @@
   "homepage": "https://github.com/krautzource/mathjax-sre-walker#readme",
   "devDependencies": {
     "mathjax-node-sre": "^3.0.0"
+  },
+  "dependencies": {
+    "mathjax3": "^3.0.0-beta.3"
   }
 }
