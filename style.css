@@ -2,7 +2,7 @@
   color: #f012be !important;
 }
 
-[data-semantic-structure]:focus, mjx-container svg:focus-within {
+[data-semantic-structure]:focus, mjx-container svg:focus {
   background-color: black;
   color: #ffff;
 }
