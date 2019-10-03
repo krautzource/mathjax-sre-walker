@@ -33,6 +33,7 @@ document
     node.setAttribute('role', 'tree');
     let tree = rewriteSkeleton(node, index);
     rewriteNode(node, tree);
+    node.querySelectorAll('*').forEach( child => {if(!child.getAttribute('role')) child.setAttribute('role', 'presentation')});
     // HACK cf. #39
     const svg = node.closest('svg');
     if (svg){
