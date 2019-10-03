@@ -19,6 +19,13 @@ const rewriteSkeleton = function(node, count) {
   return new tree(navigationStructure, count);
 };
 
+const moveAttribute = (oldnode, newnode, attribute) => {
+  const value = oldnode.getAttribute(attribute);
+  if (!value) return;
+  newnode.setAttribute(attribute, value);
+  oldnode.removeAttribute(attribute);
+}
+
 document
   .querySelectorAll('[data-semantic-structure]')
   .forEach((node, index) => {
@@ -26,5 +33,11 @@ document
     node.setAttribute('role', 'tree');
     let tree = rewriteSkeleton(node, index);
     rewriteNode(node, tree);
-    attachNavigator(node, tree);
+    // HACK cf. #39
+    const svg = node.closest('svg');
+    if (svg){
+      ['aria-owns', 'aria-label', 'role', 'tabindex'].forEach(moveAttribute.bind(null, node, svg));
+      attachNavigator(svg, tree);
+    }
+    else attachNavigator(node, tree);
   });
