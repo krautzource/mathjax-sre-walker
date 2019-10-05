@@ -36,7 +36,7 @@ document
     node.querySelectorAll('*').forEach( child => {if(!child.getAttribute('role')) child.setAttribute('role', 'presentation')});
     // HACK cf. #39
     const svg = node.closest('svg');
-    if (svg){
+    if (svg && svg !== node){
       ['aria-owns', 'aria-label', 'role', 'tabindex'].forEach(moveAttribute.bind(null, node, svg));
       attachNavigator(svg, tree);
     }
