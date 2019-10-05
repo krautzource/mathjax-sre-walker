@@ -1,5 +1,5 @@
 import { rewriteNode } from './rewritenode.mjs';
-import { attachNavigator } from './navigator.mjs';
+import { attachNavigator } from './lib/navigator.mjs';
 import { makeTree, tree } from './tree.mjs';
 
 /**
