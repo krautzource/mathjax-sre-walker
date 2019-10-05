@@ -1,7 +1,7 @@
 /**
  * Attaches a navigator to the DOM node.
  * @param {Node} node The target node.
- * @param {number} count The counter that helps to disambiguate the semantic
+ * @param {Tree} abstractTree The abstract tree that stores the relevant (subtree) structure.
  *     node ids.
  */
 export function attachNavigator(node, tree) {
