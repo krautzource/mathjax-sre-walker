@@ -2,9 +2,10 @@
   "name": "mathjax-sre-walker",
   "version": "2.0.0",
   "description": " A lightweight walker for server-side generated mathjax rendering",
-  "main": "chromify.js",
+  "main": "lib/navigator.mjs",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx rollup --file dist/treewalker.js -f esm lib/treewalker.mjs"
   },
   "repository": {
     "type": "git",
@@ -24,6 +25,7 @@
   "devDependencies": {
     "jsdom": "^15.1.1",
     "mathjax-full": "^3.0.0",
+    "rollup": "^1.23.0",
     "speech-rule-engine": "^3.0.0-beta.6"
   }
 }
