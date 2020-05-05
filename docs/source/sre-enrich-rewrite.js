@@ -8,7 +8,7 @@ const liteAdaptor = require('mathjax-full/js/adaptors/liteAdaptor.js')
   .liteAdaptor;
 const STATE = require('mathjax-full/js/core/MathItem.js').STATE;
 const AllPackages = require('mathjax-full/js/input/tex/AllPackages.js')
-  .AllPackages;
+  .AllPackages.filter( x => x!=='bussproofs'); // NOTE bussproofs needs getBBox() method
 const tex = new TeX({ packages: AllPackages });
 const html = new HTMLDocument('', liteAdaptor(), { InputJax: tex });
 const MmlVisitor = require('mathjax-full/js/core/MmlTree/SerializedMmlVisitor.js')

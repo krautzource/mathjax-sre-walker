@@ -23,9 +23,9 @@
   },
   "homepage": "https://github.com/krautzource/mathjax-sre-walker#readme",
   "devDependencies": {
-    "jsdom": "^15.1.1",
-    "mathjax-full": "^3.0.0",
-    "rollup": "^1.23.0",
-    "speech-rule-engine": "^3.0.0-beta.6"
+    "jsdom": "^16.2.2",
+    "mathjax-full": "^3.0.5",
+    "rollup": "^2.7.6",
+    "speech-rule-engine": "^3.0.0-beta.11"
   }
 }
