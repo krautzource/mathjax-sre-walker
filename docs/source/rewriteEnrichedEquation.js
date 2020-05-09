@@ -61,10 +61,6 @@ const rewrite = (node) => {
   node.setAttribute('tabindex', '0');
   node.setAttribute('role', 'tree');
   node.setAttribute('data-treewalker', '');
-  skeletonNode.setAttribute(
-    'data-semantic-owns',
-    skeletonNode.getAttribute('data-semantic-children').split(',').join(' ')
-  ); // HACK for https://github.com/zorkow/speech-rule-engine/issues/318#issuecomment-623905789
   rewriteNode(hash, skeletonNode);
   skeletonNode.querySelectorAll('*').forEach((child) => {
     if (!child.getAttribute('role')) child.setAttribute('role', 'presentation');
